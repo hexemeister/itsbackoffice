@@ -31,4 +31,17 @@ public class UtilizadorController {
 	public ResponseEntity<Utilizador> saveNewUtilizador(@RequestBody Utilizador utilizador) {
 		return new ResponseEntity<>(utilizadorService.createUtilizador(utilizador), HttpStatus.CREATED);
 	}
+	
+	@GetMapping("createuser")
+	public ResponseEntity<Utilizador> create() {
+		return new ResponseEntity<>(utilizadorService.createUtilizador(Utilizador.builder().nome("Renato").build()), HttpStatus.OK);
+	}
+//	{
+//	    "id": 1,
+//	    "username": null,
+//	    "password": null,
+//	    "nome": "Viviane",
+//	    "createTimestamp": "2019-11-16T18:30:08.274983Z",
+//	    "updateTimestamp": "2019-11-16T18:30:08.275063Z"
+//	}
 }
