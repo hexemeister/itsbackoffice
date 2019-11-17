@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,11 +33,15 @@ public class Utilizador implements AbstractEntity {
 	@Column(nullable = false, updatable = false)
 	private Integer id;
 	
+	@Column(unique = true)
+	@NotBlank
 	private String username;
 	
 	@JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
+	
+	@NotBlank
 	private String nome;
 	
 	@CreationTimestamp

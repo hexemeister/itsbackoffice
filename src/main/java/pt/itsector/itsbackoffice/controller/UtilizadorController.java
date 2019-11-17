@@ -2,6 +2,7 @@ package pt.itsector.itsbackoffice.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,10 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 
+import lombok.extern.slf4j.Slf4j;
 import pt.itsector.itsbackoffice.model.Utilizador;
+import pt.itsector.itsbackoffice.service.CannotChangeUsernameException;
 import pt.itsector.itsbackoffice.service.UtilizadorService;
 
+@Slf4j
 @RestController
 @RequestMapping("/v1/")
 public class UtilizadorController {
@@ -36,17 +42,21 @@ public class UtilizadorController {
 	}
 	
 	@PostMapping(path = "user")
-	public ResponseEntity<Utilizador> saveNewUtilizador(@RequestBody Utilizador utilizador) {
-		return new ResponseEntity<>(utilizadorService.createUtilizador(utilizador), HttpStatus.CREATED);
+	public ResponseEntity<Utilizador> saveNewUtilizador(@Validated @RequestBody Utilizador utilizador) {
+		try {
+			return new ResponseEntity<>(utilizadorService.createUtilizador(utilizador), HttpStatus.CREATED);
+		} catch (CannotChangeUsernameException e) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+		}
 	}
 	
 	@GetMapping("/user/createuser")
 	public ResponseEntity<Utilizador> createUtilizador() {
-		return new ResponseEntity<>(utilizadorService.createUtilizador(Utilizador.builder().nome("Renato").password("123").build()), HttpStatus.OK);
+		return new ResponseEntity<>(utilizadorService.createUtilizador(Utilizador.builder().nome("Renato").password("123").username("hexemeister").build()), HttpStatus.OK);
 	}
 	
 	@PutMapping("user/{userId}")
-    public ResponseEntity<Utilizador> updateUtilizadorById(@PathVariable("userId") Integer userId, @RequestBody Utilizador utilizador){
+    public ResponseEntity<Utilizador> updateUtilizadorById(@PathVariable("userId") Integer userId, @Validated @RequestBody Utilizador utilizador){
         return new ResponseEntity<>(utilizadorService.updateUtilizador(userId, utilizador), HttpStatus.NO_CONTENT);
     }
 	
@@ -55,6 +65,7 @@ public class UtilizadorController {
 	public void deleteUtilizador(@PathVariable("userId") Integer userId) {
 		utilizadorService.removeUtilizador(userId);
 	}
+	
 //	{
 //	    "id": 1,
 //	    "username": null,

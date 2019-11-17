@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import pt.itsector.itsbackoffice.controller.NotFoundException;
 import pt.itsector.itsbackoffice.model.Utilizador;
 import pt.itsector.itsbackoffice.repository.UtilizadorRepository;
 
@@ -20,7 +21,7 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 	@Override
 	public Utilizador getUtilizadorById(Integer userId) {
 		log.debug("Fetching user with ID: " + userId);
-		return utilizadorRepository.findById(userId).get();
+		return utilizadorRepository.findById(userId).orElseThrow(NotFoundException::new);
 	}
 
 	@Override
@@ -44,7 +45,11 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 
 	@Override
 	public Utilizador updateUtilizador(Integer userId, Utilizador user) {
-		Utilizador utilizador = utilizadorRepository.findById(userId).get();
+		Utilizador utilizador = utilizadorRepository.findById(userId).orElseThrow(NotFoundException::new);
+		
+		if (!user.getUsername().equals(utilizador.getUsername())) {
+			throw new CannotChangeUsernameException();
+		}
 		
 		log.debug("Updating user: " + utilizador.toString());
 		utilizador.setNome(user.getNome());
