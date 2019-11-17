@@ -30,6 +30,11 @@ public class UtilizadorController {
 		return new ResponseEntity<>(utilizadorService.getUtilizadorById(userId), HttpStatus.OK);
 	}
 	
+	@GetMapping("user")
+	public ResponseEntity<Iterable<Utilizador>> listUtilizadores() {
+		return new ResponseEntity<>(utilizadorService.listUtilizador(), HttpStatus.OK);
+	}
+	
 	@PostMapping(path = "user")
 	public ResponseEntity<Utilizador> saveNewUtilizador(@RequestBody Utilizador utilizador) {
 		return new ResponseEntity<>(utilizadorService.createUtilizador(utilizador), HttpStatus.CREATED);
@@ -37,7 +42,7 @@ public class UtilizadorController {
 	
 	@GetMapping("/user/createuser")
 	public ResponseEntity<Utilizador> createUtilizador() {
-		return new ResponseEntity<>(utilizadorService.createUtilizador(Utilizador.builder().nome("Renato").build()), HttpStatus.OK);
+		return new ResponseEntity<>(utilizadorService.createUtilizador(Utilizador.builder().nome("Renato").password("123").build()), HttpStatus.OK);
 	}
 	
 	@PutMapping("user/{userId}")

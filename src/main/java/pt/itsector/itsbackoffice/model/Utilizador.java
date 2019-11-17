@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +32,9 @@ public class Utilizador implements AbstractEntity {
 	private Integer id;
 	
 	private String username;
+	
+	@JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	private String nome;
 	

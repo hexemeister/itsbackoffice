@@ -18,13 +18,14 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 	private final UtilizadorRepository utilizadorRepository;
 	
 	@Override
-	public Utilizador getUtilizadorById(Integer id) {
-		
-		return utilizadorRepository.findById(id).get();
+	public Utilizador getUtilizadorById(Integer userId) {
+		log.debug("Fetching user with ID: " + userId);
+		return utilizadorRepository.findById(userId).get();
 	}
 
 	@Override
 	public Utilizador createUtilizador(Utilizador utilizador) {
+		log.debug("Creating user...");
 		Utilizador u = Utilizador.builder()
 				.nome(utilizador.getNome())
 				.password(utilizador.getPassword())
@@ -37,14 +38,15 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 
 	@Override
 	public Iterable<Utilizador> listUtilizador() {
-		return null;
+		log.debug("Listing all users...");
+		return utilizadorRepository.findAll();
 	}
 
 	@Override
 	public Utilizador updateUtilizador(Integer userId, Utilizador user) {
 		Utilizador utilizador = utilizadorRepository.findById(userId).get();
 		
-		log.info("Updating user: " + utilizador.toString());
+		log.debug("Updating user: " + utilizador.toString());
 		utilizador.setNome(user.getNome());
 		utilizador.setPassword(user.getPassword());
 		utilizador.setUsername(user.getUsername());
@@ -54,7 +56,7 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 
 	@Override
 	public void removeUtilizador(Integer userId) {
-		log.info("Deleting user: " + userId);
+		log.debug("Deleting user: " + userId);
 		utilizadorRepository.deleteById(userId);
 	}
 
