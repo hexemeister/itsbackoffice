@@ -14,6 +14,6 @@ public interface UtilizadorService {
 	
 	public Utilizador removeUtilizador();
 	
-	public Utilizador updateUtilizador();
+	public Utilizador updateUtilizador(Integer userId, Utilizador utilizador);
 
 }

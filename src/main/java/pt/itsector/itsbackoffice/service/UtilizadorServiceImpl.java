@@ -48,9 +48,14 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 	}
 
 	@Override
-	public Utilizador updateUtilizador() {
-		// TODO Auto-generated method stub
-		return null;
+	public Utilizador updateUtilizador(Integer userId, Utilizador user) {
+		Utilizador utilizador = utilizadorRepository.findById(userId).get();
+		
+		return utilizador.builder()
+				.nome(user.getNome())
+				.password(user.getPassword())
+				.username(user.getPassword())
+				.build();
 	}
 
 }
