@@ -1,7 +1,5 @@
 package pt.itsector.itsbackoffice.service;
 
-import java.util.List;
-
 import pt.itsector.itsbackoffice.model.Utilizador;
 
 public interface UtilizadorService {
@@ -10,9 +8,9 @@ public interface UtilizadorService {
 	
 	public Utilizador createUtilizador(Utilizador utilizador);
 	
-	public List<Utilizador> listUtilizador();
+	public Iterable<Utilizador> listUtilizador();
 	
-	public Utilizador removeUtilizador();
+	public void removeUtilizador(Integer userId);
 	
 	public Utilizador updateUtilizador(Integer userId, Utilizador utilizador);
 

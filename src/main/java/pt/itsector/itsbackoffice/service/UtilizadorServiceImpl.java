@@ -1,17 +1,17 @@
 package pt.itsector.itsbackoffice.service;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import pt.itsector.itsbackoffice.model.Utilizador;
 import pt.itsector.itsbackoffice.repository.UtilizadorRepository;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UtilizadorServiceImpl implements UtilizadorService {
 
@@ -36,14 +36,7 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 	}
 
 	@Override
-	public List<Utilizador> listUtilizador() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Utilizador removeUtilizador() {
-		// TODO Auto-generated method stub
+	public Iterable<Utilizador> listUtilizador() {
 		return null;
 	}
 
@@ -51,11 +44,18 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 	public Utilizador updateUtilizador(Integer userId, Utilizador user) {
 		Utilizador utilizador = utilizadorRepository.findById(userId).get();
 		
-		return utilizador.builder()
-				.nome(user.getNome())
-				.password(user.getPassword())
-				.username(user.getPassword())
-				.build();
+		log.info("Updating user: " + utilizador.toString());
+		utilizador.setNome(user.getNome());
+		utilizador.setPassword(user.getPassword());
+		utilizador.setUsername(user.getUsername());
+		
+		return utilizadorRepository.save(utilizador);
+	}
+
+	@Override
+	public void removeUtilizador(Integer userId) {
+		log.info("Deleting user: " + userId);
+		utilizadorRepository.deleteById(userId);
 	}
 
 }
