@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import pt.itsector.itsbackoffice.controller.NotFoundException;
+import pt.itsector.itsbackoffice.controller.ResourceNotFoundException;
 import pt.itsector.itsbackoffice.model.Utilizador;
 import pt.itsector.itsbackoffice.repository.UtilizadorRepository;
 
@@ -21,7 +21,7 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 	@Override
 	public Utilizador getUtilizadorById(Integer userId) {
 		log.debug("Fetching user with ID: " + userId);
-		return utilizadorRepository.findById(userId).orElseThrow(NotFoundException::new);
+		return utilizadorRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Resource not found for id: " + userId));
 	}
 
 	@Override
@@ -45,18 +45,24 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 
 	@Override
 	public Utilizador updateUtilizador(Integer userId, Utilizador user) {
-		Utilizador utilizador = utilizadorRepository.findById(userId).orElseThrow(NotFoundException::new);
 		
-		if (!user.getUsername().equals(utilizador.getUsername())) {
-			throw new CannotChangeUsernameException();
-		}
+		Utilizador utilizador = utilizadorRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Resource not found for id: " + userId));
 		
-		log.debug("Updating user: " + utilizador.toString());
+		log.debug("Updating user: " + utilizador.toString() + "\n to user: " + user);
+		
+		verifyIfUsernameIsTheSameAsProvided(user, utilizador);
+		
 		utilizador.setNome(user.getNome());
 		utilizador.setPassword(user.getPassword());
 		utilizador.setUsername(user.getUsername());
 		
 		return utilizadorRepository.save(utilizador);
+	}
+
+	private void verifyIfUsernameIsTheSameAsProvided(Utilizador user, Utilizador utilizador) {
+		if (!user.getUsername().equals(utilizador.getUsername())) {
+			throw new CannotChangeUsernameException("Username does not match");
+		}
 	}
 
 	@Override

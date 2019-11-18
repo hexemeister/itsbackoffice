@@ -43,13 +43,11 @@ public class UtilizadorController {
 	
 	@PostMapping(path = "user")
 	public ResponseEntity<Utilizador> saveNewUtilizador(@Validated @RequestBody Utilizador utilizador) {
-		try {
 			return new ResponseEntity<>(utilizadorService.createUtilizador(utilizador), HttpStatus.CREATED);
-		} catch (CannotChangeUsernameException e) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-		}
 	}
 	
+	
+	// Create a dummy user
 	@GetMapping("/user/createuser")
 	public ResponseEntity<Utilizador> createUtilizador() {
 		return new ResponseEntity<>(utilizadorService.createUtilizador(Utilizador.builder().nome("Renato").password("123").username("hexemeister").build()), HttpStatus.OK);
