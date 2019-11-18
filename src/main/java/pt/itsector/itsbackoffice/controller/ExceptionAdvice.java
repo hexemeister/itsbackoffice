@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import pt.itsector.itsbackoffice.service.CannotChangeUsernameException;
-
 @ControllerAdvice
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 

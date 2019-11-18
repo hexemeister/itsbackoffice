@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import pt.itsector.itsbackoffice.controller.CannotChangeUsernameException;
 import pt.itsector.itsbackoffice.controller.ResourceNotFoundException;
 import pt.itsector.itsbackoffice.model.Utilizador;
 import pt.itsector.itsbackoffice.repository.UtilizadorRepository;

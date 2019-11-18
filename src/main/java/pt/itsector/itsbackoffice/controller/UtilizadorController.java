@@ -17,7 +17,6 @@ import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 
 import lombok.extern.slf4j.Slf4j;
 import pt.itsector.itsbackoffice.model.Utilizador;
-import pt.itsector.itsbackoffice.service.CannotChangeUsernameException;
 import pt.itsector.itsbackoffice.service.UtilizadorService;
 
 @Slf4j
@@ -46,13 +45,6 @@ public class UtilizadorController {
 			return new ResponseEntity<>(utilizadorService.createUtilizador(utilizador), HttpStatus.CREATED);
 	}
 	
-	
-	// Create a dummy user
-	@GetMapping("/user/createuser")
-	public ResponseEntity<Utilizador> createUtilizador() {
-		return new ResponseEntity<>(utilizadorService.createUtilizador(Utilizador.builder().nome("Renato").password("123").username("hexemeister").build()), HttpStatus.OK);
-	}
-	
 	@PutMapping("user/{userId}")
     public ResponseEntity<Utilizador> updateUtilizadorById(@PathVariable("userId") Integer userId, @Validated @RequestBody Utilizador utilizador){
         return new ResponseEntity<>(utilizadorService.updateUtilizador(userId, utilizador), HttpStatus.NO_CONTENT);
@@ -64,12 +56,4 @@ public class UtilizadorController {
 		utilizadorService.removeUtilizador(userId);
 	}
 	
-//	{
-//	    "id": 1,
-//	    "username": null,
-//	    "password": null,
-//	    "nome": "Viviane",
-//	    "createTimestamp": "2019-11-16T18:30:08.274983Z",
-//	    "updateTimestamp": "2019-11-16T18:30:08.275063Z"
-//	}
 }

@@ -1,4 +1,4 @@
-package pt.itsector.itsbackoffice.service;
+package pt.itsector.itsbackoffice.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
